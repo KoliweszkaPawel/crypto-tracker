@@ -1,0 +1,10 @@
+<div class="card">
+  <h3>{{ crypto.name }} ({{ crypto.symbol }})</h3>
+  <p>Cena: {{ crypto.price }} USD</p>
+
+  @if (crypto.trend == 'UP') {
+    <span class="trend up">📈 Rośnie</span>
+  } @else {
+   <span class="trend down">📉 Spada</span>
+  }
+</div>
