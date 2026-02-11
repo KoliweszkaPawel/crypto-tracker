@@ -1,10 +1,11 @@
-<div class="card">
+<div class="card" [ngClass]="{'trend-up': crypto.trend === 'UP', 'trend-down': crypto.trend === 'DOWN'}">
   <h3>{{ crypto.name }} ({{ crypto.symbol }})</h3>
-  <p>Cena: {{ crypto.price }} USD</p>
+  <p>Cena: {{ crypto.price | currency:'USD':'symbol':'1.0-2' }}</p>
 
   @if (crypto.trend == 'UP') {
     <span class="trend up">📈 Rośnie</span>
   } @else {
    <span class="trend down">📉 Spada</span>
   }
+  <button (click)="buyCrypto()" )>Kup</button>
 </div>
