@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {CryptoCurrency} from './models';
 import {CryptoCard} from './crypto-card/crypto-card';
 import {CurrencyPipe} from '@angular/common';
+import {Crypto} from './crypto';
 
 @Component({
   selector: 'app-root',
@@ -10,21 +11,22 @@ import {CurrencyPipe} from '@angular/common';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
-  myCoins: CryptoCurrency[] = [
-    { name: 'Bitcoin', symbol: 'BTC', price: 45000, trend: 'UP' },
-    { name: 'Ethereum', symbol: 'ETH', price: 3200, trend: 'DOWN' },
-    { name: 'Polkadot', symbol: 'DOT', price: 7, trend: 'UP' }
-  ];
+export class App implements OnInit {
+  balance = 0;
+  coins: CryptoCurrency[] = [];
 
-  walletBalance = 1000;
-  assets: CryptoCurrency[] = [];
+  constructor(private crypto: Crypto) {}
 
-  handleBuy(crypto: CryptoCurrency) {
-    if (crypto.price <= this.walletBalance) {
-      this.walletBalance -= crypto.price;
-      this.assets.push(crypto);
-      console.log(`Kupiłeś: ${crypto.name} Zostało: ${this.walletBalance}`);
+  ngOnInit() {
+    this.coins = this.crypto.getCoins();
+    this.balance = this.crypto.getBallance();
+  }
+
+  handleBuy(coin: CryptoCurrency) {
+    const success = this.crypto.purchase(coin);
+    if (success) {
+      this.balance = this.crypto.getBallance();
+      console.log(`Kupiłeś: ${coin.name} Zostało: ${this.balance}`);
     } else {
       alert('Brak środków!');
     }
