@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CryptoCurrency} from '../models';
 import {CurrencyPipe, NgClass} from '@angular/common';
 
@@ -14,7 +14,9 @@ import {CurrencyPipe, NgClass} from '@angular/common';
 export class CryptoCard {
   @Input() crypto!: CryptoCurrency;
 
+  @Output() buyClicked: EventEmitter<CryptoCurrency> = new EventEmitter<CryptoCurrency>();
+
   buyCrypto() {
-    console.log("Kupiono:", this.crypto.name);
+    this.buyClicked.emit(this.crypto);
   }
 }

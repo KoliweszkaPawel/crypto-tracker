@@ -1,7 +1,11 @@
 <h1>Moje Krypto</h1>
 
+<header>
+  <h1>Portfel: {{ walletBalance | currency:'USD' }}</h1>
+</header>
+
 <div class="container">
   @for (coin of myCoins; track coin.symbol) {
-    <app-crypto-card [crypto]="coin"></app-crypto-card>
+    <app-crypto-card [crypto]="coin" (buyClicked)="handleBuy($event)" )></app-crypto-card>
   }
 </div>
