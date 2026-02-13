@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import {CryptoCurrency} from './models';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Crypto {
-  private walletBalance = 1000;
+  private balanceSubject = new BehaviorSubject<number>(1000);
+  public balance$ = this.balanceSubject.asObservable();
 
   private myCoins: CryptoCurrency[] = [
     { name: 'Bitcoin', symbol: 'BTC', price: 45000, trend: 'UP' },
@@ -13,18 +15,16 @@ export class Crypto {
     { name: 'Polkadot', symbol: 'DOT', price: 7, trend: 'UP' }
   ];
 
-
-  getBallance(): number {
-    return this.walletBalance;
-  }
-
   getCoins(): CryptoCurrency[] {
     return this.myCoins;
   }
 
   purchase(coin: CryptoCurrency): boolean {
-    if (this.walletBalance >= coin.price) {
-      this.walletBalance -= coin.price;
+    const currentBalance = this.balanceSubject.getValue();
+
+    if (currentBalance >= coin.price) {
+      const newBalance = currentBalance - coin.price;
+      this.balanceSubject.next(newBalance);
       return true;
     }
     return false;

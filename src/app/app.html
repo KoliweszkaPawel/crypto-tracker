@@ -1,7 +1,7 @@
 <h1>Moje Krypto</h1>
 
 <header>
-  <h1>Portfel: {{ balance | currency:'USD' }}</h1>
+  <h1>Portfel: {{ balance$ | async | currency:'USD' }}</h1>
 </header>
 
 <div class="container">
