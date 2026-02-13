@@ -1,12 +1,14 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CryptoCurrency} from '../models';
 import {CurrencyPipe, NgClass} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-crypto-card',
   imports: [
     CurrencyPipe,
-    NgClass
+    NgClass,
+    RouterLink
   ],
   templateUrl: './crypto-card.html',
   styleUrl: './crypto-card.scss',

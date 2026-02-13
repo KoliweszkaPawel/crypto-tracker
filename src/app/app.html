@@ -1,11 +1,10 @@
-<h1>Moje Krypto</h1>
-
 <header>
-  <h1>Portfel: {{ balance$ | async | currency:'USD' }}</h1>
+  <h1>CryptoTracker</h1>
+  <nav>
+    <a routerLink="/dashboard">Strona główna</a>
+  </nav>
 </header>
 
-<div class="container">
-  @for (coin of coins$ | async; track coin.symbol) {
-    <app-crypto-card [crypto]="coin" (buyClicked)="handleBuy($event)" )></app-crypto-card>
-  }
-</div>
+<main>
+  <router-outlet></router-outlet>
+</main>
