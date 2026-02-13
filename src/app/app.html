@@ -5,7 +5,7 @@
 </header>
 
 <div class="container">
-  @for (coin of coins; track coin.symbol) {
+  @for (coin of coins$ | async; track coin.symbol) {
     <app-crypto-card [crypto]="coin" (buyClicked)="handleBuy($event)" )></app-crypto-card>
   }
 </div>

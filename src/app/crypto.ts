@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {CryptoCurrency} from './models';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, map, Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -9,14 +10,22 @@ export class Crypto {
   private balanceSubject = new BehaviorSubject<number>(1000);
   public balance$ = this.balanceSubject.asObservable();
 
-  private myCoins: CryptoCurrency[] = [
-    { name: 'Bitcoin', symbol: 'BTC', price: 45000, trend: 'UP' },
-    { name: 'Ethereum', symbol: 'ETH', price: 3200, trend: 'DOWN' },
-    { name: 'Polkadot', symbol: 'DOT', price: 7, trend: 'UP' }
-  ];
+  constructor(private http: HttpClient) {
+  }
 
-  getCoins(): CryptoCurrency[] {
-    return this.myCoins;
+  getCoins(): Observable<CryptoCurrency[]> {
+    const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1';
+
+    return this.http.get<any[]>(url).pipe(
+      map(apiData => {
+        return apiData.map(coin => ({
+          name: coin.name,
+          symbol: coin.symbol,
+          price: coin.current_price,
+          trend: coin.price_change_percentage_24h > 0 ? 'UP' : 'DOWN'
+        }));
+      })
+    );
   }
 
   purchase(coin: CryptoCurrency): boolean {

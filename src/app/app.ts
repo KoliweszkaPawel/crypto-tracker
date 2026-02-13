@@ -14,12 +14,12 @@ import {Observable} from 'rxjs';
 })
 export class App implements OnInit {
   balance$!: Observable<number>;
-  coins: CryptoCurrency[] = [];
+  coins$!: Observable<CryptoCurrency[]>;
 
   constructor(private crypto: Crypto) {}
 
   ngOnInit() {
-    this.coins = this.crypto.getCoins();
+    this.coins$ = this.crypto.getCoins();
     this.balance$ = this.crypto.balance$;
   }
 
