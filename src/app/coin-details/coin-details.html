@@ -1,4 +1,23 @@
-<div class="details-container">
-  <h2>Szczegóły waluty: {{ coinId }}</h2>
-  <a routerLink="/dashboard">Wróc do portfela</a>
-</div>
+@if (details$ | async; as coin) {
+  <div class="details-card">
+    <header>
+      <img [src]="coin.image.large" width="80" alt="Logo">
+      <h2>{{ coin.name }} ({{ coin.symbol | uppercase }})</h2>
+    </header>
+
+    <div class="stats">
+      <p><strong>Cena obecna:</strong> {{ coin.market_data.current_price.usd | currency:'USD' }}</p>
+      <p><strong>Najwyższa w historii (ATH):</strong> {{ coin.market_data.ath.usd | currency:'USD' }}</p>
+      <p><strong>Kapitalizacja rynku:</strong> {{ coin.market_data.market_cap.usd | currency:'USD' }}</p>
+    </div>
+
+    <div class="description">
+      <h3>O projekcie:</h3>
+      <p [innerHTML]="coin.description.en || 'Brak opisu.'"></p>
+    </div>
+  </div>
+} @else {
+  <div class="loading">
+    Pobieranie danych...
+  </div>
+}

@@ -19,6 +19,7 @@ export class Crypto {
     return this.http.get<any[]>(url).pipe(
       map(apiData => {
         return apiData.map(coin => ({
+          id: coin.id,
           name: coin.name,
           symbol: coin.symbol,
           price: coin.current_price,
@@ -37,5 +38,10 @@ export class Crypto {
       return true;
     }
     return false;
+  }
+
+  getCoinDetails(id: string): Observable<any> {
+    const url = `https://api.coingecko.com/api/v3/coins/${id}`;
+    return this.http.get<any>(url);
   }
 }
